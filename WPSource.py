@@ -1,7 +1,7 @@
 from Crawler import *
 
 '''
-输入：网址源，搜索关键字
+输入：网址源("Pixabay","Pexels","Unsplash")，搜索关键字
 
 可获取返回的WPList，类型为python list
 '''
