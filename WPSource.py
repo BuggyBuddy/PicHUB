@@ -1,9 +1,13 @@
 from Crawler import *
 
 '''
-输入：网址源("Pixabay","Pexels","Unsplash")，搜索关键字
+使用方法：
+建立WPSource对象，构造函数输入(网址源，类型，关键词)
+	网址源目前包括{"Pixabay","Pexels","Unsplash"}
+	类型默认为temp
 
-可获取返回的WPList，类型为python list
+
+通过getImageList获取WPImage图像列表
 '''
 
 class WPSource(object):
@@ -11,8 +15,9 @@ class WPSource(object):
 	crawlerType = None
 	authorisation = None
 	parserElement = None
-	def __init__(self, sourceWeb, keyWord):
+	def __init__(self, sourceWeb, genre = "temp", keyWord = None):
 		self.sourceWeb = sourceWeb
+		self.genre = genre
 		self.keyWord = keyWord
 		url = self.createURL()
 		if self.crawlerType == "API":
@@ -20,7 +25,7 @@ class WPSource(object):
 			crawler.request(self.authorisation)
 			crawler.parse()
 			for x in crawler.imageList:
-				x.download()
+				x.download(self.genre)
 		self.WPList = crawler.imageList
 
 	def createURL(self):
@@ -36,7 +41,7 @@ class WPSource(object):
 				"colors": "all",
 				"editors_choice": "false",
 				"order": "popular",
-				"per_page": "10",
+				"per_page": "9",
 				"page": "1"
 				}
 			url = "https://pixabay.com/api/?key="+API_KEY+"&pretty=true"
@@ -51,7 +56,7 @@ class WPSource(object):
 			parameter = {
 				"query": self.keyWord,
 				"orientation": "landscape",
-				"per_page": "10",
+				"per_page": "9",
 				"page": "1"
 			}
 			url = "https://api.pexels.com/v1/search?query=" + self.keyWord
@@ -65,7 +70,7 @@ class WPSource(object):
 			parameter = {
 				"query": self.keyWord,
 				"orientation": "landscape",
-				"per_page": "10",
+				"per_page": "9",
 				"page": "1"
 			}
 			url = "https://api.unsplash.com/search/photos?client_id="+API_KEY
@@ -73,9 +78,12 @@ class WPSource(object):
 				url = url + "&" + key + "=" + parameter[key]
 			return url
 
+	def getImageList(self):
+		return self.WPList
+
 def main():
-	keyWord = input()
-	wpSource = WPSource("Unsplash", keyWord)
+	wpSource = WPSource("Unsplash", "building", "building")
+	print(wpSource.getImageList()[0].getFilePath())
 
 if __name__ == "__main__":
     main()
