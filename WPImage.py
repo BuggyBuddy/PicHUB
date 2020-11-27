@@ -21,5 +21,5 @@ class WPImage():
 	def addLabel(self, label):
 		self.labelList.append(label)
 
-	def display(): #返回图片名string
+	def display(self): #返回图片名string
 		return self.fileName
