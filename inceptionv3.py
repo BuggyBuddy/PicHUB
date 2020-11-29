@@ -11,7 +11,8 @@ model_dir=os.getcwd()
 image_dir=os.path.join(
           model_dir, 'preference')
 paths = glob.glob(os.path.join(image_dir,'*.jpg'))
-f=open("preference_sort.txt","w")
+#f1=open("preference_type.txt","a+")
+#f2=open("preference_possibility.txt","a+")
 
 
  
@@ -67,8 +68,10 @@ class NodeLookup(object):
  
   def id_to_string(self, node_id):
     if node_id not in self.node_lookup:
-      return ''
+      return ' '
     return self.node_lookup[node_id]
+
+
  
 #读取训练好的Inception-v3模型来创建graph
 def create_graph():
@@ -78,8 +81,7 @@ def create_graph():
     graph_def.ParseFromString(f.read())
     tf.import_graph_def(graph_def, name='')
     
-def result_sort(human_string, score,f):
-    f.write('%s#%.5f'),human_string,score
+
         
         
  
@@ -108,10 +110,12 @@ def predict() :
         top_5 = predictions.argsort()[-5:][::-1]
         for node_id in top_5:
           score = predictions[node_id]
-          if score>=0.05:
+          if score>=0.1:
               human_string = node_lookup.id_to_string(node_id)
-              print(human_string,'&',score)
-          #result_sort(human_string, score,f)
+#              f1.write('%s\n'%(human_string))
+#              f2.write('%s\n'%(score))
+
      
     sess.close()
-    f.close()
+#    f1.close()
+#    f2.close()
