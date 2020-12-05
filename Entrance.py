@@ -55,10 +55,10 @@ def recommender(result_type, result_poss):
 	
 
 if __name__ == "__main__":
-    result_type, result_poss = classifer(True)
-    keywordList = recommender(result_type, result_poss)
-    
-	wpSource = WPSource(sourceWeb, keyWord = keywordList)
+	result_type, result_poss = classifer(True)
+	keywordList = recommender(result_type, result_poss)
+
+	wpSource = WPSource("Pexels", keyWord = keywordList)
 	wpSource.nextPage()#获取下一页，每一页9张
 	wpSource.changeSourceWeb("Unsplash")#更改网站源
 	wpSource.run()#开始爬
