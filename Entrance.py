@@ -19,7 +19,8 @@ Edited on Sat Dec 5
 推荐器
 
 
-爬虫 WPSource
+爬虫 
+	爬虫类 WPSource
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
 	获取下一页搜索结果    nextPage()
 	更改网站源           changeSourceWeb(string 网站源)
@@ -49,17 +50,16 @@ def classifer(firstRun):
 
 def recommender(result_type, result_poss):
 	#添加推荐器，返回需要搜索的结果
-	return result_type[0]
+	return result_type[1]
 
-def searcher(keywordList, sourceWeb = "Pexels"):
-	wpSource = WPSource(sourceWeb, keyWord = keywordList)
-	wpSource.nextPage()#获取下一页，每一页9张
-	wpSource.changeSourceWeb("Pixabay")#更改网站源
-	wpSource.run()#开始爬
+	
 
 if __name__ == "__main__":
     result_type, result_poss = classifer(True)
     keywordList = recommender(result_type, result_poss)
-    searcher(keywordList)
-
+    
+	wpSource = WPSource(sourceWeb, keyWord = keywordList)
+	wpSource.nextPage()#获取下一页，每一页9张
+	wpSource.changeSourceWeb("Unsplash")#更改网站源
+	wpSource.run()#开始爬
 
