@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
  
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
 import re
 import os
 import glob
+import open_initialize
 
 file_dir=os.getcwd()
 model_dir=os.getcwd()
@@ -86,6 +87,10 @@ def create_graph():
         
  
 def predict() : 
+    preference_type=open_initialize.getpreference_type()
+    preference_poss=open_initialize.getpreference_poss()
+    result_type=[]
+    result_poss=[]
     sess=tf.Session()
 #Inception-v3模型的最后一层softmax的输出
 
@@ -112,10 +117,15 @@ def predict() :
           score = predictions[node_id]
           if score>=0.1:
               human_string = node_lookup.id_to_string(node_id)
-#              f1.write('%s\n'%(human_string))
-#              f2.write('%s\n'%(score))
-
-     
+              result_type.append(human_string)
+              result_poss.append(score)  
     sess.close()
-#    f1.close()
-#    f2.close()
+    #print(result_type)
+    #print(result_poss)
+    for i in range(len(result_type)):
+        preference_poss[preference_type[result_type[i]]]=preference_poss[preference_type[result_type[i]]]+result_poss[i]
+    f=open("preference_poss.txt","w")
+    for i in range(len(preference_poss)):
+        f.write('%f\n'%(preference_poss[i]))
+
+    return result_type, result_poss

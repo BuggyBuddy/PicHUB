@@ -16,23 +16,30 @@ class WPSource(object):
 	authorisation = None
 	parserElement = None
 	def __init__(self, sourceWeb, genre = "temp", keyWord = None):
+		self.page = 1
 		self.sourceWeb = sourceWeb
 		self.genre = genre
 		self.keyWord = keyWord
+
+	def run(self):
 		url = self.createURL()
 		if self.crawlerType == "API":
 			crawler = APICrawler(self.sourceWeb, url)
 			crawler.request(self.authorisation)
 			crawler.parse()
-			for x in crawler.imageList:
-				x.download(self.genre)
 		if self.crawlerType == "Auto":
 			crawler = AutoCrawler(self.sourceWeb, url)
 			crawler.request()
 			crawler.parse()
-			for x in crawler.imageList:
-				x.download(self.genre)
-		self.WPList = crawler.imageList
+		for x in crawler.imageList:
+			x.download(self.genre)
+		self.WPList.append(crawler.imageList) #append
+
+	def nextPage(self):
+		self.page = self.page + 1
+
+	def changeSourceWeb(self, sourceWeb):
+		self.sourceWeb = sourceWeb
 
 	def createURL(self):
 		if self.sourceWeb == "Pixabay":
@@ -48,7 +55,7 @@ class WPSource(object):
 				"editors_choice": "false",
 				"order": "popular",
 				"per_page": "9",
-				"page": "1"
+				"page": str(self.page)
 				}
 			url = "https://pixabay.com/api/?key="+API_KEY+"&pretty=true"
 			for key in parameter:
@@ -63,7 +70,7 @@ class WPSource(object):
 				"query": self.keyWord,
 				"orientation": "landscape",
 				"per_page": "9",
-				"page": "1"
+				"page": str(self.page)
 			}
 			url = "https://api.pexels.com/v1/search?query=" + self.keyWord
 			for key in parameter:
@@ -77,7 +84,7 @@ class WPSource(object):
 				"query": self.keyWord,
 				"orientation": "landscape",
 				"per_page": "9",
-				"page": "1"
+				"page": str(self.page)
 			}
 			url = "https://api.unsplash.com/search/photos?client_id="+API_KEY
 			for key in parameter:
@@ -86,8 +93,7 @@ class WPSource(object):
 
 		if self.sourceWeb == "WallPapersCraft":
 			self.crawlerType = "Auto"
-			page = str(1)
-			url = "https://wallpaperscraft.com/search/?order=downloads&page=" + page + "&query=" + self.keyWord
+			url = "https://wallpaperscraft.com/search/?order=downloads&page=" + str(self.page) + "&query=" + self.keyWord
 			return url
 
 	def getImageList(self):

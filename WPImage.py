@@ -20,7 +20,6 @@ class WPImage():
 		r = urllib3.PoolManager().request('GET', self.url, preload_content = False)
 		if not os.path.exists(self.rootPath + genre):
 			os.mkdir(os.path.join(self.rootPath, genre))
-			print("created")
 		with open(self.rootPath + genre + "\\" + self.fileName, 'wb') as out:
 			out.write(r.data)
 		r.release_conn()
