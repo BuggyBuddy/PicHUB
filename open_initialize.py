@@ -21,3 +21,18 @@ def getpreference_poss():
         preference_list.append(float(line[:-1]))
     #print(preference_list)
     return preference_list
+
+def gettemp_type():
+    i=0
+    preference_dict={}
+    for line in open("temp_tag.txt","r"):   
+        preference_dict[line[:-1]]=i
+        i=i+1
+    return preference_dict
+
+def gettemp_poss():
+    preference_list=[]#导入喜好值
+    for line in open("temp_possibility.txt","r"):
+        preference_list.append(float(line[:-1]))
+    #print(preference_list)
+    return preference_list

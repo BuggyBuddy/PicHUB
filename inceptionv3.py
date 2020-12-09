@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
  
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 import numpy as np
 import re
 import os
 import glob
-import open_initialize
+
 
 file_dir=os.getcwd()
 model_dir=os.getcwd()
@@ -87,8 +87,8 @@ def create_graph():
         
  
 def predict() : 
-    preference_type=open_initialize.getpreference_type()
-    preference_poss=open_initialize.getpreference_poss()
+#    preference_type=open_initialize.getpreference_type()
+#    preference_poss=open_initialize.getpreference_poss()
     result_type=[]
     result_poss=[]
     sess=tf.Session()
@@ -120,12 +120,14 @@ def predict() :
               result_type.append(human_string)
               result_poss.append(score)  
     sess.close()
-    #print(result_type)
-    #print(result_poss)
+    f=open("temp_tag.txt","w")
     for i in range(len(result_type)):
-        preference_poss[preference_type[result_type[i]]]=preference_poss[preference_type[result_type[i]]]+result_poss[i]
-    f=open("preference_poss.txt","w")
-    for i in range(len(preference_poss)):
-        f.write('%f\n'%(preference_poss[i]))
+        f.write('%s\n'%(result_type[i]))
+    f.close()
+    
+    f=open("temp_possibility.txt","w")
+    for i in range(len(result_type)):
+        f.write('%f\n'%(result_poss[i]))
+    f.close()
 
     return result_type, result_poss
