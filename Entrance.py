@@ -6,7 +6,7 @@ Created on Fri Nov 27 16:11:39 2020
 """
 
 '''
-Edited on Sat Dec 5
+Updated on Sat Dec 19
 
 @author: cthmd
 
@@ -17,12 +17,15 @@ Edited on Sat Dec 5
 		输出为1. string[] 分类列表 2. float[] 对于标签的数值
 
 推荐器
-
+	爬虫推荐器类 WebRecommender
+	构造函数            WebRecommender(string 关键词)
+	获取推荐            getRecommendList()
 
 爬虫 
 	爬虫类 WPSource
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
 	获取下一页搜索结果    nextPage()
+	获取第n页搜索结果     nextPage(int 页码)
 	更改网站源           changeSourceWeb(string 网站源)
 	开始爬虫             run()
 	获取壁纸列表         getImageList()
@@ -45,7 +48,7 @@ wpSource = None
 
 def classifer(firstRun):
 	if firstRun == True:
-		initialize.initialize()#第一次运行的时候运行，后面把这行注释掉
+		initialize.initialize()
 	return inceptionv3.predict()
 
 def recommender(result_type, result_poss):

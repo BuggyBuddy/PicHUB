@@ -38,6 +38,9 @@ class WPSource(object):
 	def nextPage(self):
 		self.page = self.page + 1
 
+	def nextPage(self, page)
+		self.page = page
+
 	def changeSourceWeb(self, sourceWeb):
 		self.sourceWeb = sourceWeb
 
@@ -99,8 +102,24 @@ class WPSource(object):
 	def getImageList(self):
 		return self.WPList
 
+class WebRecommender(object):
+	def __init__(self, keyWord):
+		self.url = "https://unsplash.com/s/photos/" + keyWord
+		self.crawler = Crawler("Recommender", self.url)
+		self.crawler.request()
+		self.recommendList = self.parse()
+
+	def parse(self):
+		soup = BeautifulSoup(self.crawler.webContent, 'lxml')
+		return [x.contents[0] for x in soup.findAll(class_ = "_2634o _1CBrG _1ByhS _2bG1V xLon9")]
+
+	def getRecommendList(self):
+		return self.recommendList
+
 def main():
-	wpSource = WPSource("WallPapersCraft", "Animal", "wolf")
+	#wpSource = WPSource("WallPapersCraft", "Animal", "wolf")
+	wr = WebRecommender("cougar, puma, catamount, mountain lion, painter, panther, Felis concolor")
+	print(wr.getRecommendList())
 
 if __name__ == "__main__":
     main()
