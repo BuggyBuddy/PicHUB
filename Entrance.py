@@ -25,10 +25,15 @@ Updated on Sat Dec 19
 	爬虫类 WPSource
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
 	获取下一页搜索结果    nextPage()
-	获取第n页搜索结果     nextPage(int 页码)
+	获取第n页搜索结果     toPage(int 页码)
+	更改搜索词           changeKeyWord(string 关键词)
 	更改网站源           changeSourceWeb(string 网站源)
+	记录已使用           markUsed(string 壁纸文件名)
+	记录喜欢             markLike(string 壁纸文件名, bool 喜欢)
+	返回喜欢列表         getLike()
+	库存数量             inStock()
 	开始爬虫             run()
-	获取壁纸列表         getImageList()
+	获取未使用壁纸列表    getImageList()
 
 	壁纸图片类 WPImage 通过壁纸列表访问
 		获取标签列表     getLabel()
@@ -58,11 +63,17 @@ def recommender(result_type, result_poss):
 	
 
 if __name__ == "__main__":
-	result_type, result_poss = classifer(True)
-	keywordList = recommender(result_type, result_poss)
+	#result_type, result_poss = classifer(True)
+	#keywordList = recommender(result_type, result_poss)
 
-	wpSource = WPSource("Pexels", keyWord = keywordList)
-	wpSource.nextPage()#获取下一页，每一页9张
-	wpSource.changeSourceWeb("Unsplash")#更改网站源
+	wpSource = WPSource("Pexels", keyWord = "cat")
+	wpSource.toPage(3)#获取第3页
 	wpSource.run()#开始爬
+
+	wpSource.changeSourceWeb("Unsplash")#更改网站源
+	wpSource.nextPage()#获取下一页，每一页9张
+	wpSource.run()
+
+	print([x.fileName for x in wpSource.getImageList()])
+
 

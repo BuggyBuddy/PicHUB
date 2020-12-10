@@ -12,6 +12,7 @@ from Crawler import *
 
 class WPSource(object):
 	WPList = [] #壁纸列表
+	WPusedList = []
 	crawlerType = None
 	authorisation = None
 	parserElement = None
@@ -33,16 +34,38 @@ class WPSource(object):
 			crawler.parse()
 		for x in crawler.imageList:
 			x.download(self.genre)
-		self.WPList.append(crawler.imageList) #append
+		self.WPList.extend(crawler.imageList) #append
 
 	def nextPage(self):
 		self.page = self.page + 1
 
-	def nextPage(self, page)
+	def toPage(self, page):
 		self.page = page
 
 	def changeSourceWeb(self, sourceWeb):
 		self.sourceWeb = sourceWeb
+
+	def changeKeyWord(self, keyWord):
+		self.keyWord = keyWord
+
+	def getImageList(self):
+		return self.WPList
+
+	def markUsed(self, name):
+		mark = next((x for x in self.WPList if x.fileName == name), None)
+		self.WPusedList.append(mark)
+		self.WPList.remove(mark)
+
+	def markLike(self, name, like):
+		for x in WPusedList:
+			if x.fileName == name:
+				x.like = True
+
+	def getLikeList(self):
+		return [x.like == True for x in self.WPusedList]
+
+	def inStock(self):
+		return self.WPList.size()
 
 	def createURL(self):
 		if self.sourceWeb == "Pixabay":
@@ -52,15 +75,15 @@ class WPSource(object):
 				"q": self.keyWord,
 				"lang": "en",
 				"image_type": "all",
-				"orientation": "all",
+				"orientation": "horizontal",
 				"category": "all",
 				"colors": "all",
 				"editors_choice": "false",
-				"order": "popular",
+				"order": "latest",
 				"per_page": "9",
 				"page": str(self.page)
 				}
-			url = "https://pixabay.com/api/?key="+API_KEY+"&pretty=true"
+			url = "https://pixabay.com/api/?key="+API_KEY
 			for key in parameter:
 				url = url + "&" + key + "=" + parameter[key]
 			return url
@@ -99,8 +122,6 @@ class WPSource(object):
 			url = "https://wallpaperscraft.com/search/?order=downloads&page=" + str(self.page) + "&query=" + self.keyWord
 			return url
 
-	def getImageList(self):
-		return self.WPList
 
 class WebRecommender(object):
 	def __init__(self, keyWord):

@@ -59,6 +59,3 @@ class APICrawler(Crawler):
 			self.imageList = [WPImage(self.sourceWeb,x["id"],x["src"]["original"],x["width"],x["height"]) for x in j["photos"][:]]
 		if self.sourceWeb == "Unsplash":
 			self.imageList = [WPImage(self.sourceWeb,x["id"],x["urls"]["regular"],x["width"],x["height"]) for x in j["results"][:]]
-
-
-

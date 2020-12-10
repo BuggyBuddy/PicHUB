@@ -7,10 +7,11 @@ class WPImage():
 	labelList = []
 	size = [0,0]
 	rootPath = "wallpaper\\"
+	like = False
 	def __init__(self, sourceWeb, webID, url, width, height):
 		self.sourceWeb = sourceWeb
 		self.webID = webID
-		self.fileName = sourceWeb + str(webID) + ".jpg"
+		self.fileName = sourceWeb + " " + str(webID) + ".jpg"
 		self.url = url
 		self.size[0] = width
 		self.size[1] = height
