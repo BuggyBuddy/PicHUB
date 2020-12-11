@@ -20,7 +20,7 @@ Updated on Sat Dec 19
 	爬虫推荐器类 WebRecommender
 	构造函数            WebRecommender(string 关键词)
 	获取推荐            getRecommendList()
-        更新器        renew() 更新用户的喜好值。
+
 爬虫 
 	爬虫类 WPSource
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
@@ -74,19 +74,22 @@ def classifer(firstRun):
 	return inceptionv3.predict()
 
 def localRecommender(maxPoss, maxType):
+	total = 50
 	for i in range(5):
+		print(maxType[i], int(maxPoss[i]*total))
+		wpSource.changeSourceWeb("Unsplash")
 		wpSource.changeKeyWord(maxType[i])
-		for p in range(int(maxPoss[i]*10)):
-			wpSource.nextPage()
-			wpSource.run()
+		wpSource.changePerPage(int(maxPoss[i]*total))
+		wpSource.run()
+	wpSource.changePerPage(9)
 
 if __name__ == "__main__":
 	wpSource = WPSource("Unsplash", keyWord = "cat")
 
 	result_type, result_poss = classifer(True)
-	max_poss, max_dict = get_max_dict()
-	keywordList = localRecommender(max_poss, max_dict)
-
-	print(["\\wallpaper\\" + wpSource.genre + "\\" + x.fileName for x in wpSource.getImageList()])
+	maxPoss, maxType = get_max_dict()
+	localRecommender(maxPoss, maxType)
+	
+	#print([x.getFilePath() for x in wpSource.getImageList()])
 
 

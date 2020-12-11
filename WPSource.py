@@ -16,6 +16,8 @@ class WPSource(object):
 	crawlerType = None
 	authorisation = None
 	parserElement = None
+	perPage = 9
+
 	def __init__(self, sourceWeb, genre = "temp", keyWord = None):
 		self.page = 1
 		self.sourceWeb = sourceWeb
@@ -47,6 +49,9 @@ class WPSource(object):
 
 	def changeKeyWord(self, keyWord):
 		self.keyWord = keyWord
+
+	def changePerPage(self, perPage):
+		self.perPage = perPage
 
 	def getImageList(self):
 		return self.WPList
@@ -80,7 +85,7 @@ class WPSource(object):
 				"colors": "all",
 				"editors_choice": "false",
 				"order": "latest",
-				"per_page": "9",
+				"per_page": str(self.perPage),
 				"page": str(self.page)
 				}
 			url = "https://pixabay.com/api/?key="+API_KEY
@@ -95,7 +100,7 @@ class WPSource(object):
 			parameter = {
 				"query": self.keyWord,
 				"orientation": "landscape",
-				"per_page": "9",
+				"per_page": str(self.perPage),
 				"page": str(self.page)
 			}
 			url = "https://api.pexels.com/v1/search?query=" + self.keyWord
@@ -109,7 +114,7 @@ class WPSource(object):
 			parameter = {
 				"query": self.keyWord,
 				"orientation": "landscape",
-				"per_page": "9",
+				"per_page": str(self.perPage),
 				"page": str(self.page)
 			}
 			url = "https://api.unsplash.com/search/photos?client_id="+API_KEY
