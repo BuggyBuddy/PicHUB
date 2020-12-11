@@ -1,8 +1,7 @@
-import json
 import open_initialize
 
 def modify():
-    dic={}
+    #dic={}
     #change_dic={}
     #val=[]
    # with open('test.txt')as f:
@@ -13,8 +12,8 @@ def modify():
    #    dic[b[0]]=b[1]
     preference_dict=open_initialize.getpreference_type()
     preference_list=open_initialize.getpreference_poss()
-    dic=zip(preference_dict,preference_list)
-    print(dic)
+    #dic=zip(preference_dict,preference_list)
+    #print(dic)
    # with open('changetest.txt')as g:
    #    lines=g.readlines()
    # for line in lines:

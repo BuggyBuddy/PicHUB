@@ -15,6 +15,14 @@ def getpreference_type():
         i=i+1
     return preference_dict
 
+def getpreference_type_list():
+    i=0
+    preference_list=[]
+    for line in open("preference_type.txt","r"):   
+        preference_list.append(line[:-1])
+        i=i+1
+    return preference_list
+
 def getpreference_poss():
     preference_list=[]#导入喜好值
     for line in open("preference_poss.txt","r"):
