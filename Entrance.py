@@ -20,7 +20,7 @@ Updated on Sat Dec 19
 	爬虫推荐器类 WebRecommender
 	构造函数            WebRecommender(string 关键词)
 	获取推荐            getRecommendList()
-
+        更新器        renew() 更新用户的喜好值。
 爬虫 
 	爬虫类 WPSource
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
