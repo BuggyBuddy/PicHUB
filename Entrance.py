@@ -51,42 +51,42 @@ from WPSource import *
 
 wpSource = None
 
+def get_max_dict():
+    preference_dict=open_initialize.getpreference_type_list()
+    preference_poss=open_initialize.getpreference_poss()
+    max_poss=[0,0,0,0,0]
+    max_dict=['','','','','']
+    for i in range(len(preference_poss)):
+        if preference_poss[i]>min(max_poss):
+            #print(i)
+            c=max_poss.index(min(max_poss))
+            #print(c)
+            max_poss[c]=preference_poss[i]
+            max_dict[c]=preference_dict[i]
+            sum_poss=sum(max_poss)
+            for i in range(1,5):
+                max_poss[i]=max_poss[i]/sum_poss
+    return max_poss,max_dict
+
 def classifer(firstRun):
 	if firstRun == True:
 		initialize.initialize()
 	return inceptionv3.predict()
 
-def recommender():
-	preference_dict=open_initialize.getpreference_type_list()
-        preference_poss=open_initialize.getpreference_poss()
-        max_poss=[0,0,0,0,0]
-        max_dict=['','','','','']
-        for i in range(len(preference_poss)):
-	if preference_poss[i]>min(max_poss):
-	    #print(i)
-	    c=max_poss.index(min(max_poss))
-	    #print(c)
-	    max_poss[c]=preference_poss[i]
-	    max_dict[c]=preference_dict[i]
-	    sum_poss=sum(max_poss)
-	    for i in range(1,5):
-		max_poss[i]=max_poss[i]/sum_poss
-        return max_poss,max_dict
-
-	
+def localRecommender(maxPoss, maxType):
+	for i in range(5):
+		wpSource.changeKeyWord(maxType[i])
+		for p in range(int(maxPoss[i]*10)):
+			wpSource.nextPage()
+			wpSource.run()
 
 if __name__ == "__main__":
-	#result_type, result_poss = classifer(True)
-	#keywordList = recommender(result_type, result_poss)
+	wpSource = WPSource("Unsplash", keyWord = "cat")
 
-	wpSource = WPSource("Pexels", keyWord = "cat")
-	wpSource.toPage(3)#获取第3页
-	wpSource.run()#开始爬
+	result_type, result_poss = classifer(True)
+	max_poss, max_dict = get_max_dict()
+	keywordList = localRecommender(max_poss, max_dict)
 
-	wpSource.changeSourceWeb("Unsplash")#更改网站源
-	wpSource.nextPage()#获取下一页，每一页9张
-	wpSource.run()
-
-	print([x.fileName for x in wpSource.getImageList()])
+	print(["\\wallpaper\\" + wpSource.genre + "\\" + x.fileName for x in wpSource.getImageList()])
 
 
