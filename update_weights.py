@@ -1,5 +1,5 @@
 import open_initialize
-
+import inceptionv3
 def modify():
     #dic={}
     #change_dic={}
@@ -23,6 +23,8 @@ def modify():
    #    change_dic[b[0]]=b[1]
     temp_dict=open_initialize.gettemp_type()
     temp_list=open_initialize.gettemp_poss()
+    print(temp_dict)
+    print(temp_list)
     #change_dic=zip(temp_dict,temp_list)
     for key in temp_dict:
         #print(key)
@@ -40,4 +42,5 @@ def modify():
     with open('preference_poss.txt','w') as h:
         for line in range(len(preference_list)):
             h.write('%f\n'%(preference_list[line]))
+    inceptionv3.del_temp_txt()
 #modify()

@@ -83,8 +83,17 @@ def create_graph():
     tf.import_graph_def(graph_def, name='')
     
 
+def del_temp_image():
+    path_data=os.path.join(model_dir,'preference')
+    for i in os.listdir(path_data) :# os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+        file_data = path_data + "\\" + i#当前文件夹的下面的所有东西的绝对路径
+        if os.path.isfile(file_data) == True:#os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+            os.remove(file_data)    
         
-        
+def del_temp_txt():
+    os.remove(os.path.join(model_dir,'temp_possibility.txt'))
+    os.remove(os.path.join(model_dir,'temp_tag.txt'))
+
  
 def predict() : 
 #    preference_type=open_initialize.getpreference_type()
@@ -129,5 +138,5 @@ def predict() :
     for i in range(len(result_type)):
         f.write('%f\n'%(result_poss[i]))
     f.close()
-
+    del_temp_image()
     return result_type, result_poss
