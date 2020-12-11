@@ -23,6 +23,7 @@ Updated on Sat Dec 19
 
 爬虫 
 	爬虫类 WPSource
+	网址源目前包括{"Pixabay","Pexels","Unsplash", "WallPapersCraft"}
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
 	获取下一页搜索结果    nextPage()
 	获取第n页搜索结果     toPage(int 页码)
@@ -89,7 +90,7 @@ if __name__ == "__main__":
 	result_type, result_poss = classifer(True)
 	maxPoss, maxType = get_max_dict()
 	localRecommender(maxPoss, maxType)
-	
+
 	#print([x.getFilePath() for x in wpSource.getImageList()])
 
 
