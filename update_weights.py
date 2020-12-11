@@ -41,4 +41,4 @@ def modify():
     with open('preference_poss.txt','w') as h:
         for line in range(len(preference_list)):
             h.write('%f\n'%(preference_list[line]))
-modify()
+#modify()
