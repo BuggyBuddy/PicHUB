@@ -4,7 +4,7 @@ import threading
 '''
 使用方法：
 建立WPSource对象，构造函数输入(网址源，类型，关键词)
-	网址源目前包括{"Pixabay","Pexels","Unsplash"，"WallPapersCraft"}
+	网址源目前包括{"Pixabay","Pexels","Unsplash", "WallPapersCraft"}
 	类型默认为temp
 
 
@@ -24,20 +24,12 @@ class WPSource(object):
 		self.sourceWeb = sourceWeb
 		self.genre = genre
 		self.keyWord = keyWord
-	
-	def init_threads(self, sourceWeb, genre = "temp", keyWord = None):
-		self.page = 1
-		self.sourceWeb = sourceWeb
-		self.genre = genre
-		self.keyWord = keyWord
-		thread=threading.Thread.__init__(self)
-		thread.start()
-		
-	def run_threads(self):
-		thread=threading.Thread.run(self)
-		thread=start()
+		self.thread = threading.Thread(target = self.fetch)
 
 	def run(self):
+		self.thread.start()
+
+	def fetch(self):
 		url = self.createURL()
 		if self.crawlerType == "API":
 			crawler = APICrawler(self.sourceWeb, url)
@@ -49,6 +41,7 @@ class WPSource(object):
 			crawler.parse()
 		for x in crawler.imageList:
 			x.download(self.genre)
+			print("download")
 		self.WPList.extend(crawler.imageList) #append
 
 	def nextPage(self):

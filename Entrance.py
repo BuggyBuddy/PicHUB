@@ -6,7 +6,7 @@ Created on Fri Nov 27 16:11:39 2020
 """
 
 '''
-Updated on Sat Dec 19
+Updated on Sat Dec 17
 
 @author: cthmd
 
@@ -17,14 +17,14 @@ Updated on Sat Dec 19
 		输出为1. string[] 分类列表 2. float[] 对于标签的数值
 
 推荐器
-	爬虫推荐器类 WebRecommender
-	构造函数            WebRecommender(string 关键词)
-	获取推荐            getRecommendList()
+	本地推荐器           localRecommender(maxPoss, maxType)
 
 爬虫 
 	爬虫类 WPSource
 	网址源目前包括{"Pixabay","Pexels","Unsplash", "WallPapersCraft"}
 	构造函数             WPSource(string 网站源, string 图片类别, string 搜索词)
+	开始爬虫线程         run()
+	非线程爬虫           fetch()
 	获取下一页搜索结果    nextPage()
 	获取第n页搜索结果     toPage(int 页码)
 	更改搜索词           changeKeyWord(string 关键词)
@@ -33,7 +33,6 @@ Updated on Sat Dec 19
 	记录喜欢             markLike(string 壁纸文件名, bool 喜欢)
 	返回喜欢列表         getLike()
 	库存数量             inStock()
-	开始爬虫             run()
 	获取未使用壁纸列表    getImageList()
 
 	壁纸图片类 WPImage 通过壁纸列表访问
@@ -81,16 +80,32 @@ def localRecommender(maxPoss, maxType):
 		wpSource.changeSourceWeb("Unsplash")
 		wpSource.changeKeyWord(maxType[i])
 		wpSource.changePerPage(int(maxPoss[i]*total))
-		wpSource.run()
+		wpSource.fetch()
 	wpSource.changePerPage(9)
 
 if __name__ == "__main__":
-	wpSource = WPSource("Unsplash", keyWord = "cat")
 
+###########复制这些到程序初始化
+	wpSource = WPSource("Unsplash", keyWord = "girl")
 	result_type, result_poss = classifer(True)
 	maxPoss, maxType = get_max_dict()
-	localRecommender(maxPoss, maxType)
+	recommenderThread = threading.Thread(target = localRecommender, args = [maxPoss, maxType])
+###########复制到这
 
+###########如果要开始推荐器线程
+	recommenderThread.start()
+
+###########爬虫参数更改示例
+	wpSource.changeKeyWord("girl")
+	wpSource.changeSourceWeb("Unsplash")
+	
+###########开始爬虫线程
+	wpSource.run()
+
+
+
+	for i in range(5000):
+		print("我在跑，它在下")
 	#print([x.getFilePath() for x in wpSource.getImageList()])
 
 
