@@ -3,7 +3,7 @@ from Crawler import *
 '''
 使用方法：
 建立WPSource对象，构造函数输入(网址源，类型，关键词)
-	网址源目前包括{"Pixabay","Pexels","Unsplash"}
+	网址源目前包括{"Pixabay","Pexels","Unsplash"，"WallPapersCraft"}
 	类型默认为temp
 
 
