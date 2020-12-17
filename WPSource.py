@@ -25,12 +25,17 @@ class WPSource(object):
 		self.genre = genre
 		self.keyWord = keyWord
 	
-	def threads(self, sourceWeb, genre = "temp", keyWord = None):
+	def init_threads(self, sourceWeb, genre = "temp", keyWord = None):
 		self.page = 1
 		self.sourceWeb = sourceWeb
 		self.genre = genre
 		self.keyWord = keyWord
-		threading.Thread.__init__(self)
+		thread=threading.Thread.__init__(self)
+		thread.start()
+		
+	def run_threads(self):
+		thread=threading.Thread.run(self)
+		thread=start()
 
 	def run(self):
 		url = self.createURL()
