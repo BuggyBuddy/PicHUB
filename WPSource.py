@@ -1,5 +1,5 @@
 from Crawler import *
-improt threading
+import threading
 
 '''
 使用方法：
