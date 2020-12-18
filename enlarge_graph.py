@@ -39,9 +39,10 @@ class Enlarge(QWidget):
 
     def download(self):
         imgName, imgType = QFileDialog.getSaveFileName(self, "保存图片", "", "*.jpg;;*.png;;All Files(*)")
-        shutil.copyfile(self.path,  imgName)  #保存到用户选择的位置
-        self.show_messagebox()
-        self.close()
+        if imgName!='':
+            shutil.copyfile(self.path,  imgName)  #保存到用户选择的位置
+            self.show_messagebox()
+            self.close()
 
     def show_messagebox(self):
         QMessageBox.about(self, '提示', '下载成功！') 
