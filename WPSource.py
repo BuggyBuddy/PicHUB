@@ -1,6 +1,8 @@
 from Crawler import *
 import threading
-
+from PyQt5 import QtCore, QtGui, QtWidgets
+import inspect
+import ctypes
 '''
 使用方法：
 建立WPSource对象，构造函数输入(网址源，类型，关键词)
@@ -10,6 +12,7 @@ import threading
 
 通过getImageList获取WPImage图像列表
 '''
+import pichub
 
 class WPSource(object):
 	WPList = [] #壁纸列表
@@ -27,6 +30,8 @@ class WPSource(object):
 		self.thread = threading.Thread(target = self.fetch)
 
 	def run(self):
+		#self.stop_thread(self.thread)
+		self.thread = threading.Thread(target = self.fetch)
 		self.thread.start()
 
 	def fetch(self):
@@ -43,6 +48,9 @@ class WPSource(object):
 			x.download(self.genre)
 			print("download")
 		self.WPList.extend(crawler.imageList) #append
+		pichub.showWallPaper()
+		print("hahaha")
+		
 
 	def nextPage(self):
 		self.page = self.page + 1
