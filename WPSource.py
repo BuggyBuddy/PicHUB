@@ -12,7 +12,7 @@ import ctypes
 
 通过getImageList获取WPImage图像列表
 '''
-import pichub
+#import pichub
 
 class WPSource(object):
 	WPList = [] #壁纸列表
@@ -48,8 +48,7 @@ class WPSource(object):
 			x.download(self.genre)
 			print("download")
 		self.WPList.extend(crawler.imageList) #append
-		pichub.showWallPaper()
-		print("hahaha")
+		#pichub.showWallPaper()
 		
 
 	def nextPage(self):

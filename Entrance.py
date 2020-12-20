@@ -17,7 +17,7 @@ Updated on Sat Dec 17
 		输出为1. string[] 分类列表 2. float[] 对于标签的数值
 
 推荐器
-	本地推荐器           localRecommender(maxPoss, maxType)
+	本地推荐器           localRecommender(maxPoss, maxType, wpSource)
 
 爬虫 
 	爬虫类 WPSource
@@ -73,7 +73,7 @@ def classifer(firstRun):
 		initialize.initialize()
 	return inceptionv3.predict()
 
-def localRecommender(maxPoss, maxType):
+def localRecommender(maxPoss, maxType, wpSource):
 	total = 50
 	for i in range(5):
 		print(maxType[i], int(maxPoss[i]*total))
