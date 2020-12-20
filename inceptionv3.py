@@ -95,7 +95,7 @@ def del_temp_txt():
     os.remove(os.path.join(model_dir,'temp_tag.txt'))
 
  
-def predict() : 
+def predict(pathsss) : 
 #    preference_type=open_initialize.getpreference_type()
 #    preference_poss=open_initialize.getpreference_poss()
     result_type=[]
@@ -109,7 +109,7 @@ def predict() :
 
     
     #读取图片
-    for path in paths:
+    for path in pathsss:
         image_data = tf.gfile.FastGFile(path, 'rb').read()
 
 
@@ -140,3 +140,5 @@ def predict() :
     f.close()
     del_temp_image()
     return result_type, result_poss
+
+
