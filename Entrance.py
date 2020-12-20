@@ -18,6 +18,7 @@ Updated on Sat Dec 17
 
 推荐器
 	本地推荐器           localRecommender(maxPoss, maxType, wpSource)
+	本地推荐器线程       recommenderThread.start()
 
 爬虫 
 	爬虫类 WPSource
@@ -89,7 +90,7 @@ if __name__ == "__main__":
 	wpSource = WPSource("Unsplash", keyWord = "girl")
 	result_type, result_poss = classifer(True)
 	maxPoss, maxType = get_max_dict()
-	recommenderThread = threading.Thread(target = localRecommender, args = [maxPoss, maxType])
+	recommenderThread = threading.Thread(target = localRecommender, args = [maxPoss, maxType, wpSource])
 ###########复制到这
 
 ###########如果要开始推荐器线程
