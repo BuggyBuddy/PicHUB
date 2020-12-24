@@ -9,12 +9,11 @@ class Player:
     timer:用来实现自动播放的定时器
     autoPlaying:自动播放的标志
     """
-    def __init__(self):
-        self.intervalTime = 300
-        self.mode = 'InOrder'
-        self.wallpaperList = WPPlayList()
-        self.timer = None
-        self.autoPlaying = 0
+    intervalTime = 300;
+    mode = 'InOrder'
+    wallpaerList = WPPlayList()
+    timer = threading.Timer()
+    autoPlaying = 0
 
     def setWPList(self, wallpaperList):
         self.wallpaperList = wallpaperList
