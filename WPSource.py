@@ -14,6 +14,33 @@ import ctypes
 '''
 import pichub
 
+class MyThread(threading.Thread):
+	def __init__(self,source):
+		super(MyThread,self).__init__()
+		self.flag = False
+		self.source = source
+ 
+	def run(self):
+		url = self.source.createURL()
+		if self.source.crawlerType == "API":
+			crawler = APICrawler(self.source.sourceWeb, url)
+			crawler.request(self.source.authorisation)
+			crawler.parse()
+		if self.source.crawlerType == "Auto":
+			crawler = AutoCrawler(self.source.sourceWeb, url)
+			crawler.request()
+			crawler.parse()
+		for x in crawler.imageList:
+			if self.flag == True:
+				return
+			x.download(self.source.genre)
+			print("download")
+		self.source.WPList.extend(crawler.imageList) #append
+		pichub.showWallPaper()
+
+	def terminate(self):
+		self.flag = True
+
 class WPSource(object):
 	WPList = [] #壁纸列表
 	WPusedList = []
@@ -27,11 +54,13 @@ class WPSource(object):
 		self.sourceWeb = sourceWeb
 		self.genre = genre
 		self.keyWord = keyWord
-		self.thread = threading.Thread(target = self.fetch)
+		self.flag = False
+		self.thread = MyThread(self)
 
 	def run(self):
-		#self.stop_thread(self.thread)
-		self.thread = threading.Thread(target = self.fetch)
+		self.thread.terminate()
+		print(self.sourceWeb)
+		self.thread = MyThread(self)
 		self.thread.start()
 
 	def fetch(self):
@@ -45,11 +74,11 @@ class WPSource(object):
 			crawler.request()
 			crawler.parse()
 		for x in crawler.imageList:
+
 			x.download(self.genre)
 			print("download")
 		self.WPList.extend(crawler.imageList) #append
 		pichub.showWallPaper()
-		print("hahaha")
 		
 
 	def nextPage(self):
