@@ -74,39 +74,57 @@ def classifer(firstRun):
 		initialize.initialize()
 	return inceptionv3.predict()
 
-def localRecommender(maxPoss, maxType, wpSource):
-	total = 50
-	for i in range(5):
-		print(maxType[i], int(maxPoss[i]*total))
-		wpSource.changeSourceWeb("Unsplash")
-		wpSource.changeKeyWord(maxType[i])
-		wpSource.changePerPage(int(maxPoss[i]*total))
-		wpSource.fetch()
-	wpSource.changePerPage(9)
+
+class Recommender(object):
+	def __init__(self, maxPoss, maxType):
+		self.running = True
+		self.maxPoss = maxPoss
+		self.maxType = maxType
+		self.wpSource = WPSource("Unsplash", keyWord = "girl")
+
+	def localRecommender(self):
+		total = 50
+		for i in range(5):
+			if self.running == False:
+				break
+			self.wpSource.changeSourceWeb("Unsplash")
+			self.wpSource.changeKeyWord(self.maxType[i])
+			self.wpSource.changePerPage(int(self.maxPoss[i]*total))
+			self.wpSource.fetch()
+		self.wpSource.changePerPage(9)
+
+	def run(self):
+		self.recommenderThread = threading.Thread(target = self.localRecommender)
+		self.running = True
+		self.wpSource.running = True
+		self.recommenderThread.start()
+
+	def stop(self):
+		self.wpSource.running = False
+		self.running = False
+
 
 if __name__ == "__main__":
 
 ###########复制这些到程序初始化
 	wpSource = WPSource("Unsplash", keyWord = "girl")
-	result_type, result_poss = classifer(True)
+	#result_type, result_poss = classifer(True)
 	maxPoss, maxType = get_max_dict()
-	recommenderThread = threading.Thread(target = localRecommender, args = [maxPoss, maxType, wpSource])
+	recommender = Recommender([0.1,0.2,0.3,0.4,0], ["happy","fun","door","bug","dog"])
 ###########复制到这
 
-###########如果要开始推荐器线程
-	recommenderThread.start()
+###########开始与中断推荐器线程
+	recommender.run()
+	recommender.stop()
 
 ###########爬虫参数更改示例
 	wpSource.changeKeyWord("girl")
 	wpSource.changeSourceWeb("Unsplash")
 	
 ###########开始爬虫线程
-	wpSource.run()
+	#wpSource.run()
 
 
-
-	for i in range(5000):
-		print("我在跑，它在下")
 	#print([x.getFilePath() for x in wpSource.getImageList()])
 
 

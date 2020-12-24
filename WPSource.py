@@ -21,6 +21,7 @@ class WPSource(object):
 	authorisation = None
 	parserElement = None
 	perPage = 9
+	running = True
 
 	def __init__(self, sourceWeb, genre = "temp", keyWord = None):
 		self.page = 1
@@ -45,10 +46,10 @@ class WPSource(object):
 			crawler.request()
 			crawler.parse()
 		for x in crawler.imageList:
-			x.download(self.genre)
+			if self.running == True:
+				x.download(self.genre)
 			print("download")
 		self.WPList.extend(crawler.imageList) #append
-		#pichub.showWallPaper()
 		
 
 	def nextPage(self):
