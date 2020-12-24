@@ -17,8 +17,9 @@ Updated on Sat Dec 17
 		输出为1. string[] 分类列表 2. float[] 对于标签的数值
 
 推荐器
-	本地推荐器           localRecommender(maxPoss, maxType, wpSource)
-	本地推荐器线程       recommenderThread.start()
+	本地推荐器           Recommender(maxPoss, maxType)
+	本地推荐器线程开始    run()
+	本地推荐器线程中断    stop()
 
 爬虫 
 	爬虫类 WPSource
