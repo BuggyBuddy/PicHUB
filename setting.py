@@ -6,20 +6,17 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import shutil
 import os
+from Player import Player
 
-class Settings():
-    def __init__(self):
-        self.single_display=0
-        self.internal="5min"
-        self.address="C:\\appcache"
+
 
 class settings_window(QWidget):
     def __init__(self):
         super(settings_window, self).__init__()
-        self.resize(600, 750)
+        self.setFixedSize(500, 750)
         self.setWindowTitle("设置")
         self.roll_area=QScrollArea(self)
-        self.roll_area.resize(600,750)
+        self.roll_area.resize(500,750)
         self.setting_title=QLabel('设置',self)
         self.setting_title.setFont(QFont("Microsoft YaHei",20))
         self.play_title=QLabel('播放设置',self)
@@ -30,10 +27,13 @@ class settings_window(QWidget):
         self.single_button.setFont(QFont("Microsoft YaHei",12))
         self.loop_button = QRadioButton('循环播放', self)
         self.loop_button.setFont(QFont("Microsoft YaHei",12))
+        self.shuffle_button = QRadioButton('随机播放', self)
+        self.shuffle_button.setFont(QFont("Microsoft YaHei",12))
         self.time_title=QLabel('时间间隔',self)
         self.time_title.setFont(QFont("Microsoft YaHei",12))
         self.time_edit = QComboBox(self)
         self.time_edit.addItems(['30s','5min','15min','30min','1h'])
+        '''
         self.mem_title=QLabel('存储设置',self)
         self.mem_title.setFont(QFont("Microsoft YaHei",16))
         self.addr_title=QLabel('存储地址',self)
@@ -46,9 +46,15 @@ class settings_window(QWidget):
         self.cache_label = QLabel('5GB',self)
         self.cache_label.setFont(QFont("Microsoft YaHei",12))
         self.cache_button = QPushButton('清除缓存',self)
+        '''
+        self.empty_label1 = QLabel('',self)
+        self.empty_label2 = QLabel('',self)
+        self.empty_label3 = QLabel('',self)
+        #self.empty_label4 = QLabel('',self)
         self.exit_button = QPushButton('保存并退出此对话框',self)
         self.dairy_title=QLabel('更新日志',self)
         self.dairy_title.setFont(QFont("Microsoft YaHei",20))
+        
         self.dairy='''
     你知道吗，长颈鹿喝咖啡的时候，在嘴边是热的，咖啡还没到肚子里就凉了。你不知道,你只在乎你自己。
     你知道吗，乌拉圭的人口有345.7万，同时仅澳大利亚就有4700万袋鼠，如果袋鼠决定入侵乌拉圭，那么每一个乌拉圭人都要打14只袋鼠。你不知道，你不在乎，你只关心你自己。
@@ -61,7 +67,7 @@ class settings_window(QWidget):
     你说得对，但是梵蒂冈的人口只有801人，同时，仅拥核国家就有1.9万枚核弹。如果拥核国家决定核击梵蒂冈，那么每一个梵蒂冈人要扛23枚核弹，你不知道，你不在乎，你只知道乌拉圭！
     '''       
         self.dairy_label=QLabel(self.dairy,self)
-        self.dairy_label.setFixedWidth(550)
+        self.dairy_label.setFixedWidth(450)
         self.dairy_label.setFont(QFont("Microsoft YaHei",12))
         self.dairy_label.setWordWrap(True)
         self.makelayout()
@@ -77,15 +83,18 @@ class settings_window(QWidget):
         self.cache_layout = QHBoxLayout()
         self.time_layout = QHBoxLayout()
         self.addr_layout = QGridLayout()
+        self.empty_layout = QHBoxLayout()
         self.roll_layout.addWidget(self.setting_title)
         self.roll_layout.addWidget(self.play_title)
         self.button_layout.addWidget(self.mode_title)
         self.button_layout.addWidget(self.single_button)
         self.button_layout.addWidget(self.loop_button)
+        self.button_layout.addWidget(self.shuffle_button)
         self.roll_layout.addLayout(self.button_layout)
         self.time_layout.addWidget(self.time_title)
         self.time_layout.addWidget(self.time_edit)
         self.roll_layout.addLayout(self.time_layout)
+        '''
         self.roll_layout.addWidget(self.mem_title)
         self.addr_layout.addWidget(self.addr_title,0,0,1,1)
         self.addr_layout.addWidget(self.addr_edit,0,1,2,1)
@@ -96,7 +105,13 @@ class settings_window(QWidget):
         self.cache_layout.addWidget(self.cache_label)
         self.cache_layout.addWidget(self.cache_button)
         self.roll_layout.addLayout(self.cache_layout)
-        self.roll_layout.addWidget(self.exit_button)
+        '''
+        self.empty_layout.addWidget(self.empty_label1)
+        self.empty_layout.addWidget(self.empty_label2)
+        self.empty_layout.addWidget(self.exit_button)
+        self.roll_layout.addWidget(self.empty_label3)
+        self.roll_layout.addLayout(self.empty_layout)
+        #self.roll_layout.addWidget(self.empty_label4)
         self.roll_layout.addWidget(self.dairy_title)
         self.roll_layout.addWidget(self.dairy_label)
         self.roll_group = QGroupBox()
@@ -106,28 +121,27 @@ class settings_window(QWidget):
     def logic_init(self):
         self.single_button.toggled.connect(self.single_func)
         self.loop_button.toggled.connect(self.loop_func)
-        self.addr_button.clicked.connect(self.brouse_addr)
+        self.shuffle_button.toggled.connect(self.shuffle_func)
+        #self.addr_button.clicked.connect(self.brouse_addr)
         self.exit_button.clicked.connect(self.save_and_quit)
         self.time_edit.currentIndexChanged.connect(self.reset_time)
-        self.cache_button.clicked.connect(self.clear_cache)
+        #self.cache_button.clicked.connect(self.clear_cache)
 
     def settings_init(self):
-        self.settings=Settings()
-        if os.path.getsize("settings"):  
-            with open ("settings" ,"r") as f:
-                i=f.readlines()
-                self.settings.single_display=i[0].rstrip('\n')
-                self.settings.internal=i[1].rstrip('\n')
-                self.settings.address=i[2].rstrip('\n')
-        if self.settings.single_display=='0':
-            self.loop_button.setChecked(True)
-            self.time_edit.setEnabled(True)
-            self.time_edit.setCurrentText(self.settings.internal)
+        if Player.autoPlaying==1:
+            if Player.mode=='Inorder':
+                self.loop_button.setChecked(True)
+                self.time_edit.setEnabled(True)
+                self.reset_time_text()
+            else:
+                self.shuffle_button.setChecked(True)
+                self.time_edit.setEnabled(True)
+                self.reset_time_text()
         else:
             self.single_button.setChecked(True)
             self.time_edit.setDisabled(True)
-        self.addr_edit.setText(self.settings.address)
-        self.cache_label.setText(str(os.path.getsize(self.settings.address)))
+        #self.addr_edit.setText(setting.address)
+        #self.cache_label.setText(str(os.path.getsize(setting.address)))
         
 
         #初始化界面
@@ -137,38 +151,58 @@ class settings_window(QWidget):
 
 
     def single_func(self):
-        self.settings.single_display=1
+        Player.stop()
         self.time_edit.setDisabled(True)
         return
 
 
     def loop_func(self):
-        self.settings.single_display=0
+        Player.playInOrder()
         self.time_edit.setEnabled(True)
+        self.reset_time_text()
         return
 
+    def shuffle_func(self):
+        Player.playInShuffle()
+        self.time_edit.setEnabled(True)
+        self.reset_time_text()
+        return
+
+    '''
     def brouse_addr(self):
         pathname = QFileDialog.getExistingDirectory(self)
         self.addr_edit.setText(pathname)
         self.settings.address=pathname
         self.cache_label.setText(str(os.path.getsize(self.settings.address)))
         return
+    '''
 
     def save_and_quit(self):
+        '''
         with open("settings","w") as f:
             f.writelines([str(self.settings.single_display),"\n", self.settings.internal,"\n", self.settings.address,"\n"])
+        '''
         QMessageBox.about(self, '提示', '更改成功！')
         self.close()
 
+    def reset_time_text(self):
+        switch={30:'30s',300:'5min',900:'15min',1800:'30min',3600:'1h'}
+        newtext = switch[Player.intervalTime]
+        self.time_edit.setCurrentText(newtext)
+        print(newtext)
+
     def reset_time(self):
-        newtime = self.time_edit.currentText()
-        self.settings.internal=newtime
+        switch={'30s':30,'5min':300,'15min':900,'30min':1800,'1h':3600}
+        newtime = switch[self.time_edit.currentText()]
+        Player.setIntervalTime(newtime)
         print(newtime)
 
+    '''
     def clear_cache(self):
         os.remove(self.settings.address)
         self.cache_label.setText(str(os.path.getsize(self.settings.address)))
         QMessageBox.about(self,'提示','缓存已清除！')
+    '''
 
     
 if __name__ == "__main__":
