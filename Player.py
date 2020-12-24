@@ -1,6 +1,9 @@
 import threading
 import WPPlayList
 
+def noneFunc():
+    return
+
 class Player:
     """
     intervalTime:自动播放间隔时间（单位秒）
@@ -9,43 +12,53 @@ class Player:
     timer:用来实现自动播放的定时器
     autoPlaying:自动播放的标志
     """
-    intervalTime = 300;
+    intervalTime = 300
     mode = 'InOrder'
-    wallpaerList = WPPlayList()
-    timer = threading.Timer()
+    wallpaerList = WPPlayList.WPPlayList("Temp")
+    timer = threading.Timer(300, noneFunc)
     autoPlaying = 0
 
-    def setWPList(self, wallpaperList):
-        self.wallpaperList = wallpaperList
+    @staticmethod
+    def setWPList(wallpaperList):
+        Player.wallpaperList = wallpaperList
 
-    def setIntervalTime(self, time):
-        self.intervalTime = time
+    @staticmethod
+    def setIntervalTime(time):
+        Player.intervalTime = time
 
-    def playInOrder(self):
-        self.mode = 'InOrder'
-        self.__play()
+    @staticmethod
+    def playInOrder():
+        Player.mode = 'InOrder'
+        Player.__play()
 
-    def playInShuffle(self):
-        self.mode = 'InShuffle'
-        self.__play()
+    @staticmethod
+    def playInShuffle():
+        Player.mode = 'InShuffle'
+        Player.__play()
 
-    def playIndex(self, index):
-        if self.autoPlaying:
-            self.stop()
-            self.wallpaperList.showIndex(index)
-            self.__play()
+    @staticmethod
+    def playIndex(index):
+        if Player.autoPlaying:
+            Player.stop()
+            Player.wallpaperList.showIndex(index)
+            Player.__play()
         else:
-            self.wallpaperList.showIndex(index)
+            Player.wallpaperList.showIndex(index)
 
-    def stop(self):
-        self.autoPlaying = 0
-        self.timer.cancel()
+    @staticmethod
+    def stop():
+        Player.autoPlaying = 0
+        Player.timer.cancel()
 
-    def __play(self):
-        self.timer = threading.Timer(self.intervalTime, self.__playNext)
-        self.autoPlaying = 1
-        self.timer.start()
+    @staticmethod
+    def __play():
+        Player.timer = threading.Timer(Player.intervalTime, Player.__playNext)
+        Player.autoPlaying = 1
+        Player.timer.start()
 
-    def __playNext(self):
-        self.wallpaperList.showNext(self.mode)
-        self.timer.start()
+    @staticmethod
+    def __playNext():
+        Player.wallpaperList.showNext(Player.mode)
+        Player.timer.cancel()
+        Player.timer = threading.Timer(Player.intervalTime, Player.__playNext)
+        Player.timer.start()

@@ -1,9 +1,13 @@
 import sys
+import os
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import shutil
+import ListSelecter
+import pichub
+from changeWallpaper import*
 
 class Enlarge(QWidget):
     def __init__(self,_Path):
@@ -20,6 +24,8 @@ class Enlarge(QWidget):
         self.change_button = QPushButton('下载并设为壁纸',self)
         self.collect_button = QPushButton('收藏',self)
         self.make_layout()
+        self.collect_button.clicked.connect(pichub.listSelecterDialog.show)
+        self.change_button.clicked.connect(self.downloadAndChange)
         
 
 
@@ -43,6 +49,17 @@ class Enlarge(QWidget):
             shutil.copyfile(self.path,  imgName)  #保存到用户选择的位置
             self.show_messagebox()
             self.close()
+
+    def like(self):
+        pichub.listSelecterDialog.show()
+
+    def downloadAndChange(self):
+        imgName, imgType = QFileDialog.getSaveFileName(self, "保存图片", "", "*.jpg;;*.png;;All Files(*)")
+        if imgName!='':
+            shutil.copyfile(self.path,  imgName)  #保存到用户选择的位置
+            self.show_messagebox()
+            self.close()
+        setWallpaper(os.path.abspath(self.path))
 
     def show_messagebox(self):
         QMessageBox.about(self, '提示', '下载成功！') 

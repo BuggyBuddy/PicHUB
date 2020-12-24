@@ -40,4 +40,4 @@ fo = "0.bmp"
 type2bmp(fi,fo)
 fo = os.path.abspath(fo)
 #相对路径改绝对路径
-setWallpaper(fo)
+#setWallpaper("C:\\Users\\ASUS\\wallpaper\\temp\\Unsplash 9ACj_wPsud8.jpg")
