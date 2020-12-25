@@ -64,10 +64,7 @@ class Enlarge(QWidget):
     def show_messagebox(self):
         QMessageBox.about(self, '提示', '下载成功！') 
 
-    def renew_image(self,path):
-        self.jpg = QtGui.QPixmap(path).scaled(self.graph.width(), self.graph.height(),aspectRatioMode=Qt.KeepAspectRatio)
-        self.graph.setPixmap(self.jpg)
-
+    
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     my = Enlarge(_Path = 'C:\\appcache\\1.png')  #临时文件位置
