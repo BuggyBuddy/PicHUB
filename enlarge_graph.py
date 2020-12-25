@@ -30,7 +30,7 @@ class Enlarge(QWidget):
 
 
     def open_image(self):
-        self.jpg = QtGui.QPixmap(self.path).scaled(self.graph.width(), self.graph.height(),aspectRatioMode=Qt.KeepAspectRatio)
+        self.jpg = QtGui.QPixmap(self.path).scaled(self.graph.width(), self.graph.height(),aspectRatioMode=Qt.IgnoreAspectRatio)
         self.graph.setPixmap(self.jpg)
 
     def make_layout(self):
